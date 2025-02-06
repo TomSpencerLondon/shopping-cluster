@@ -1,10 +1,8 @@
 package com.shopping.orderservice.repository;
 
 import com.shopping.orderservice.model.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByUserId(String userId);
-    List<Order> findByStatus(String status);
+public interface OrderRepository extends MongoRepository<Order, String> {
+    // Add custom queries if needed
 }

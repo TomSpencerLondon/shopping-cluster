@@ -1,27 +1,16 @@
 package com.shopping.orderservice.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import java.math.BigDecimal;
 
-@Entity
+@Document(collection = "orderItems")
 @Data
 public class OrderItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private Long productId;
+    private String id;
+    private String productId;
     private String productName;
     private int quantity;
     private BigDecimal price;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
-    
-    @Transient
-    public BigDecimal getSubtotal() {
-        return price.multiply(BigDecimal.valueOf(quantity));
-    }
+    private BigDecimal subtotal;
 }

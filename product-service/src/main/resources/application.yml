@@ -5,7 +5,7 @@ spring:
   application:
     name: product-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/productdb
+    url: jdbc:postgresql://postgres:5432/productdb
     username: user
     password: password
   jpa:
@@ -19,7 +19,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:password@localhost:8761/eureka/
+      defaultZone: http://eureka:password@discovery-server:8761/eureka/
   instance:
     preferIpAddress: true
 
