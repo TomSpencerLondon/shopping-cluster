@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  discovery-server:
+    build: ./discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - shopping-network
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:password@discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+    networks:
+      - shopping-network
+
+  basket-service:
+    build: ./basket-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-basket:5432/basketdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:password@discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - postgres-basket
+    networks:
+      - shopping-network
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-product:5432/productdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:password@discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - postgres-product
+    networks:
+      - shopping-network
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-order:5432/orderdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:password@discovery-server:8761/eureka
+    depends_on:
+      - discovery-server
+      - postgres-order
+    networks:
+      - shopping-network
+
+  postgres-basket:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=basketdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres-basket-data:/var/lib/postgresql/data
+    networks:
+      - shopping-network
+
+  postgres-product:
+    image: postgres:14-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=productdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres-product-data:/var/lib/postgresql/data
+    networks:
+      - shopping-network
+
+  postgres-order:
+    image: postgres:14-alpine
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_DB=orderdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres-order-data:/var/lib/postgresql/data
+    networks:
+      - shopping-network
+
+networks:
+  shopping-network:
+    driver: bridge
+
+volumes:
+  postgres-basket-data:
+  postgres-product-data:
+  postgres-order-data:
