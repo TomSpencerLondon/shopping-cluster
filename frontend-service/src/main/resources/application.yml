@@ -5,6 +5,13 @@ spring:
   application:
     name: frontend-service
 
+logging:
+  level:
+    org.springframework.web.client: DEBUG
+
+basket-service:
+  url: http://basket-service:8081
+
 eureka:
   client:
     serviceUrl:

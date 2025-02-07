@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: product-service
-          image: shopping-cluster/product-service:latest
-          imagePullPolicy: Never
+          image: localhost:5000/product-service:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082
           env:

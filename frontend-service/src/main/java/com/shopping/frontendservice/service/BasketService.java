@@ -7,9 +7,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.math.BigDecimal;
+import java.util.Collections;
 
 @Service
 public class BasketService {
@@ -32,16 +35,16 @@ public class BasketService {
     }
 
     public BasketDto addToBasket(String userId, Long productId, Integer quantity, BigDecimal price, String productName) {
-        Map<String, Object> requestBody = new HashMap<>();
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        var requestBody = new HashMap<String, Object>();
         requestBody.put("productId", productId);
         requestBody.put("quantity", quantity);
-        requestBody.put("price", price);
+        requestBody.put("price", price.doubleValue());
         requestBody.put("productName", productName);
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+
+        var request = new HttpEntity<>(requestBody, headers);
         
         return restTemplate.postForObject(
             basketServiceUrl + "/api/basket/{userId}/items",

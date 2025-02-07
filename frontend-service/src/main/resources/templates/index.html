@@ -40,30 +40,30 @@
             <h2>Shopping Basket</h2>
             <div class="card">
                 <div class="card-body">
-                    <div th:if="${basket != null and basket.items != null and !basket.items.empty}">
-                        <div th:each="item : ${basket.items}" class="mb-3">
+                    <div th:if="${basket == null}" class="alert alert-warning">
+                        Basket service is starting up...
+                    </div>
+                    <div th:if="${basket != null}">
+                        <div th:if="${basket.items.isEmpty()}" class="text-muted">
+                            Your basket is empty
+                        </div>
+                        <div th:each="item : ${basket.items}" class="mb-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 th:text="${item.productName}">Product Name</h6>
-                                    <p class="mb-0">
-                                        <span th:text="${item.quantity}">0</span> x 
-                                        <span th:text="${'$' + item.price}">$0.00</span>
-                                    </p>
+                                    <span th:text="${item.productName}">Product</span>
+                                    <small class="text-muted" th:text="'Qty: ' + ${item.quantity}">Qty: 1</small>
                                 </div>
-                                <form th:action="@{/basket/remove/{itemId}(itemId=${item.id})}" 
-                                      method="post">
-                                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                                </form>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2" th:text="'$' + ${item.price}">$0.00</span>
+                                    <form th:action="@{/basket/remove/{itemId}(itemId=${item.id})}" method="post" style="margin: 0">
+                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <hr/>
-                        <div class="d-flex justify-content-between">
-                            <h5>Total:</h5>
-                            <h5 th:text="${'$' + #aggregates.sum(basket.items.![price * quantity])}">$0.00</h5>
+                        <div th:if="${!basket.items.isEmpty()}" class="mt-3">
+                            <strong>Total: $<span th:text="${basket.total}">0.00</span></strong>
                         </div>
-                    </div>
-                    <div th:if="${basket == null or basket.items == null or basket.items.empty}">
-                        <p>Your basket is empty</p>
                     </div>
                 </div>
             </div>

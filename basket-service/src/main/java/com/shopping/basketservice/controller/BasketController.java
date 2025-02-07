@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/basket")
@@ -22,13 +25,8 @@ public class BasketController {
         return ResponseEntity.ok(basketService.getBasket(userId));
     }
 
-    @PostMapping(value = "/{userId}/items", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<Basket> addItem(@PathVariable String userId,
-                                        @RequestParam("productId") Long productId,
-                                        @RequestParam("quantity") Integer quantity) {
-        BasketItem item = new BasketItem();
-        item.setProductId(productId);
-        item.setQuantity(quantity);
+    @PostMapping(value = "/{userId}/items", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Basket> addItem(@PathVariable String userId, @RequestBody BasketItem item) {
         return ResponseEntity.ok(basketService.addItem(userId, item));
     }
 

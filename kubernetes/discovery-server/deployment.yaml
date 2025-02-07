@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: discovery-server
-          image: shopping-cluster/discovery-server:latest
-          imagePullPolicy: Never
+          image: localhost:5000/discovery-server:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8761
           env:

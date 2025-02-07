@@ -14,10 +14,18 @@ spec:
     spec:
       containers:
         - name: basket-service
-          image: shopping-cluster/basket-service:latest
-          imagePullPolicy: Never
+          image: localhost:5000/basket-service:latest
+          imagePullPolicy: Always
+          command: ["java"]
+          args: [
+            "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5006",
+            "-jar",
+            "app.jar"
+          ]
           ports:
             - containerPort: 8081
+            - containerPort: 5006
+              name: debug
           env:
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:

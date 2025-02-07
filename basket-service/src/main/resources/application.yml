@@ -16,6 +16,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.shopping.basketservice: DEBUG
+
 eureka:
   client:
     serviceUrl:

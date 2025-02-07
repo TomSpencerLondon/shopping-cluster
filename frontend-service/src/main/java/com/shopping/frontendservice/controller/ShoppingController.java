@@ -24,7 +24,14 @@ public class ShoppingController {
         var products = productService.getAllProducts();
         log.info("Found {} products", products.size());
         model.addAttribute("products", products);
-        model.addAttribute("basket", basketService.getBasket(DEFAULT_USER_ID));
+        
+        try {
+            model.addAttribute("basket", basketService.getBasket(DEFAULT_USER_ID));
+        } catch (Exception e) {
+            log.warn("Failed to get basket, basket service may be starting up: {}", e.getMessage());
+            model.addAttribute("basket", null);
+        }
+        
         return "index";
     }
 
