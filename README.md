@@ -143,6 +143,14 @@ kubectl port-forward deployment/basket-service 5006:5006
    - Check debug ports are exposed in deployment
    - Ensure launch.json configuration matches deployment ports
 
+## Frontend Application Preview
+
+Here is a preview of what the frontend application looks like:
+
+![Frontend Application](https://github.com/user-attachments/assets/d3d690a1-a998-497d-b5d5-1dd444de7cc7)
+
+This image provides a visual representation of the user interface, showcasing the layout and design of the frontend application.
+
 ## Running in Kubernetes
 
 ### Ensuring Docker Images are Available to Minikube
