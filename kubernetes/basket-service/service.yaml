@@ -6,11 +6,7 @@ spec:
   selector:
     app: basket-service
   ports:
-    - name: http
-      port: 8081
+    - protocol: TCP
+      port: 80
       targetPort: 8081
-    - name: debug
-      port: 5006
-      targetPort: 5006
-      nodePort: 30506
   type: NodePort

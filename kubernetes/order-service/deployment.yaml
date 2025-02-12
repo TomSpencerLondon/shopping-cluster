@@ -14,10 +14,11 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: shopping-cluster/order-service:latest
+          image: order-service:latest
           imagePullPolicy: Never
           ports:
-            - containerPort: 8083
+            - containerPort: 8080
+            - containerPort: 5008
           env:
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
@@ -53,6 +54,6 @@ spec:
   selector:
     app: order-service
   ports:
-    - port: 8083
-      targetPort: 8083
+    - port: 8080
+      targetPort: 8080
   type: ClusterIP

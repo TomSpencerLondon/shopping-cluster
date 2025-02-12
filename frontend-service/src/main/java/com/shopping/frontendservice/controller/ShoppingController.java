@@ -20,6 +20,7 @@ public class ShoppingController {
 
     @GetMapping("/")
     public String home(Model model) {
+
         log.info("Loading home page");
         var products = productService.getAllProducts();
         log.info("Found {} products", products.size());

@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
         - name: discovery-server
-          image: localhost:5000/discovery-server:latest
-          imagePullPolicy: IfNotPresent
+          image: discovery-server:latest
+          imagePullPolicy: Never
           ports:
-            - containerPort: 8761
+            - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
@@ -38,6 +38,6 @@ spec:
   selector:
     app: discovery-server
   ports:
-    - port: 8761
-      targetPort: 8761
+    - port: 8080
+      targetPort: 8080
   type: ClusterIP

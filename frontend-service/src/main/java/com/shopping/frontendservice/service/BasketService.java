@@ -13,9 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.math.BigDecimal;
 import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class BasketService {
+    
+    private static final Logger logger = LoggerFactory.getLogger(BasketService.class);
     
     private final RestTemplate restTemplate;
     private final String basketServiceUrl;
@@ -27,11 +31,30 @@ public class BasketService {
     }
 
     public BasketDto getBasket(String userId) {
-        return restTemplate.getForObject(
-            basketServiceUrl + "/api/basket/{userId}", 
-            BasketDto.class,
-            userId
-        );
+        try {
+            logger.info("Fetching basket for userId: " + userId);
+            BasketDto basket = restTemplate.getForObject(
+                basketServiceUrl + "/api/basket/{userId}", 
+                BasketDto.class,
+                userId
+            );
+
+            if (basket != null && basket.getItems() != null) {
+                logger.info("Calculating total for basket with " + basket.getItems().size() + " items.");
+                BigDecimal total = basket.getItems().stream()
+                    .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+                basket.setTotal(total);
+                logger.info("Total calculated: " + total);
+            } else {
+                logger.warn("Basket or items are null for userId: " + userId);
+            }
+
+            return basket;
+        } catch (Exception e) {
+            logger.error("Failed to retrieve basket for userId: " + userId, e);
+            return null;
+        }
     }
 
     public BasketDto addToBasket(String userId, Long productId, Integer quantity, BigDecimal price, String productName) {

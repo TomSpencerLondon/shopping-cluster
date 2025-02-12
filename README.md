@@ -145,6 +145,25 @@ kubectl port-forward deployment/basket-service 5006:5006
 
 ## Running in Kubernetes
 
+### Ensuring Docker Images are Available to Minikube
+
+When working with Minikube and local Docker images, it's crucial to ensure that your images are built within Minikube's Docker environment. This can be done using the following command:
+
+1. **Switch to Minikube's Docker Environment:**
+   - Run this command to configure your terminal to use Minikube's Docker daemon:
+     ```bash
+     eval $(minikube docker-env)
+     ```
+   - This ensures that any Docker images you build are available to the Minikube cluster.
+
+2. **Build Docker Images:**
+   - After switching to Minikube's Docker environment, build your Docker images as usual:
+     ```bash
+     docker build -t your-image-name:tag .
+     ```
+
+By following these steps, you can efficiently use Minikube for local development with Docker images, ensuring that updates to images are reflected in your deployments.
+
 ### Prerequisites
 
 1. Kubernetes cluster (e.g., minikube, kind, or Docker Desktop)
@@ -194,6 +213,32 @@ kubectl apply -f kubernetes/basket-service/
 # Deploy frontend service
 kubectl apply -f kubernetes/frontend-service/
 ```
+
+## Accessing the Frontend Application
+
+To access the frontend application running in your Minikube cluster, you can use direct pod port forwarding. This method bypasses any service configuration issues and allows you to connect directly to the pod.
+
+### Steps to Access the Application:
+
+1. **Get Pod Name:**
+   - Ensure you have the correct pod name by listing the pods:
+     ```bash
+     kubectl get pods
+     ```
+
+2. **Port Forward to Pod:**
+   - Forward a local port to the pod's port 8085. For example, to use local port 8086:
+     ```bash
+     kubectl port-forward pod/<frontend-service-pod-name> 8086:8085
+     ```
+
+3. **Access the Application:**
+   - Open your web browser and navigate to:
+     ```
+     http://127.0.0.1:8086/
+     ```
+
+This setup allows you to access the application directly, making it easier to debug and test without modifying service configurations.
 
 ### Access the Application
 

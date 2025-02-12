@@ -64,6 +64,8 @@ spec:
                 secretKeyRef:
                   name: application-secrets
                   key: POSTGRES_PASSWORD
+            - name: POSTGRES_MAX_CONNECTIONS
+              value: "200"
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -116,6 +118,8 @@ spec:
                 secretKeyRef:
                   name: application-secrets
                   key: POSTGRES_PASSWORD
+            - name: POSTGRES_MAX_CONNECTIONS
+              value: "200"
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -173,10 +177,15 @@ spec:
           volumeMounts:
             - name: postgres-order-storage
               mountPath: /var/lib/postgresql/data
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: postgres-order-storage
           persistentVolumeClaim:
             claimName: postgres-order-pvc
+        - name: init-script
+          configMap:
+            name: orderdb-init-configmap
 ---
 apiVersion: v1
 kind: Service

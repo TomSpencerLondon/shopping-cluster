@@ -14,15 +14,12 @@ spec:
     spec:
       containers:
         - name: frontend-service
-          image: localhost:5000/frontend-service:latest
-          imagePullPolicy: IfNotPresent
+          image: frontend-service:local
+          imagePullPolicy: Never
           ports:
-            - containerPort: 8085
+            - containerPort: 8080
             - containerPort: 5005
-              name: debug
           env:
-            - name: JAVA_TOOL_OPTIONS
-              value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
@@ -42,6 +39,6 @@ spec:
   selector:
     app: frontend-service
   ports:
-    - port: 8085
-      targetPort: 8085
+    - port: 8080
+      targetPort: 8080
   type: LoadBalancer

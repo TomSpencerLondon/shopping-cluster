@@ -12,6 +12,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  profiles:
+    active: default
 
 eureka:
   client:
@@ -33,3 +35,10 @@ management:
     web:
       exposure:
         include: "*"
+
+---
+spring:
+  profiles: kubernetes
+  eureka:
+    client:
+      enabled: false

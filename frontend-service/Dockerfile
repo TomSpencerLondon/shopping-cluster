@@ -1,7 +1,15 @@
-FROM eclipse-temurin:17.0.5_8-jre-focal
+# Use an official Java runtime as a parent image
+FROM eclipse-temurin:23-jdk-alpine
+
+# Set the working directory inside the container
 WORKDIR /app
-COPY target/*.jar app.jar
-EXPOSE 8085
+
+# Copy the built JAR file into the container
+COPY target/frontend-service-1.0.0.jar app.jar
+
+# Expose the application port
+EXPOSE 8080
 EXPOSE 5005
-ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Run the application with debugging enabled
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "app.jar"]

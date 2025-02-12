@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug Frontend Service",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005
+    },
+    {
+      "type": "java",
+      "name": "Debug Product Service",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5006
+    },
+    {
+      "type": "java",
+      "name": "Debug Basket Service",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5007
+    },
+    {
+      "type": "java",
+      "name": "Debug Order Service",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5008
+    }
+  ]
+}

@@ -1,8 +1,7 @@
-version: '3.8'
-
 services:
   discovery-server:
-    build: ./discovery-server
+    image: azul/zulu-openjdk-alpine:17-jre
+    platform: linux/arm64
     ports:
       - "8761:8761"
     environment:
@@ -11,7 +10,8 @@ services:
       - shopping-network
 
   api-gateway:
-    build: ./api-gateway
+    image: azul/zulu-openjdk-alpine:17-jre
+    platform: linux/arm64
     ports:
       - "8080:8080"
     environment:
@@ -23,7 +23,8 @@ services:
       - shopping-network
 
   basket-service:
-    build: ./basket-service
+    image: azul/zulu-openjdk-alpine:17-jre
+    platform: linux/arm64
     ports:
       - "8081:8081"
     environment:
@@ -39,7 +40,8 @@ services:
       - shopping-network
 
   product-service:
-    build: ./product-service
+    image: azul/zulu-openjdk-alpine:17-jre
+    platform: linux/arm64
     ports:
       - "8082:8082"
     environment:
@@ -55,7 +57,8 @@ services:
       - shopping-network
 
   order-service:
-    build: ./order-service
+    image: azul/zulu-openjdk-alpine:17-jre
+    platform: linux/arm64
     ports:
       - "8083:8083"
     environment:
@@ -71,7 +74,7 @@ services:
       - shopping-network
 
   postgres-basket:
-    image: postgres:14-alpine
+    image: timescale/timescaledb:latest-pg14
     ports:
       - "5432:5432"
     environment:
@@ -84,7 +87,7 @@ services:
       - shopping-network
 
   postgres-product:
-    image: postgres:14-alpine
+    image: timescale/timescaledb:latest-pg14
     ports:
       - "5433:5432"
     environment:
@@ -97,7 +100,7 @@ services:
       - shopping-network
 
   postgres-order:
-    image: postgres:14-alpine
+    image: timescale/timescaledb:latest-pg14
     ports:
       - "5434:5432"
     environment:

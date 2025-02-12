@@ -28,3 +28,15 @@ management:
     web:
       exposure:
         include: "*"
+
+---
+spring:
+  profiles:
+    active: default
+
+---
+spring:
+  profiles: kubernetes
+  eureka:
+    client:
+      enabled: false
